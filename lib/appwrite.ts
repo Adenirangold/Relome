@@ -1,4 +1,4 @@
-import { Account, Avatars, Client, OAuthProvider } from "react-native-appwrite";
+import { Client, Account, OAuthProvider, Avatars } from "react-native-appwrite";
 import * as Linking from "expo-linking";
 import { openAuthSessionAsync } from "expo-web-browser";
 
@@ -9,7 +9,6 @@ export const config = {
 };
 
 export const client = new Client();
-
 client
   .setEndpoint(config.endpoint!)
   .setProject(config.projectId!)
@@ -18,34 +17,37 @@ client
 export const avatar = new Avatars(client);
 export const account = new Account(client);
 
-export const login = async () => {
+export async function login() {
   try {
-    const redirectUrl = Linking.createURL("/");
+    const redirectUri = Linking.createURL("/");
+
     const response = await account.createOAuth2Token(
       OAuthProvider.Google,
-      redirectUrl
+      redirectUri
     );
-    if (!response) throw new Error("Failed To Login");
+    if (!response) throw new Error("Create OAuth2 token failed");
 
     const browserResult = await openAuthSessionAsync(
       response.toString(),
-      redirectUrl
+      redirectUri
     );
-    if (browserResult.type !== "success") throw new Error("Failed To Login");
+    if (browserResult.type !== "success")
+      throw new Error("Create OAuth2 token failed");
 
     const url = new URL(browserResult.url);
     const secret = url.searchParams.get("secret")?.toString();
     const userId = url.searchParams.get("userId")?.toString();
+    if (!secret || !userId) throw new Error("Create OAuth2 token failed");
 
-    if (!secret || !userId) throw new Error("Failed To Login");
-    const session = account.createSession(userId, secret);
-    if (!session) throw new Error("Failed To Create Session");
+    const session = await account.createSession(userId, secret);
+    if (!session) throw new Error("Failed to create session");
+
     return true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return false;
   }
-};
+}
 
 export async function logout() {
   try {
@@ -56,6 +58,7 @@ export async function logout() {
     return false;
   }
 }
+
 export async function getCurrentUser() {
   try {
     const result = await account.get();
