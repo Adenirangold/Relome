@@ -28,14 +28,6 @@ const signIn = () => {
       Alert.alert("Error", "Failed To Login");
     }
   };
-  const handleLogout = async () => {
-    const result = await logout();
-    if (result) {
-      console.log(result);
-    } else {
-      Alert.alert("Error", "Failed To Logout");
-    }
-  };
 
   return (
     <SafeAreaView className="bg-white h-full ">
@@ -68,21 +60,6 @@ const signIn = () => {
               ></Image>
               <Text className="text-lg font-rubik text-black-300 ml-2">
                 Continue with Google
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleLogout}
-            className=" bg-white shadow-md shadow-zinc-300 mb-50 rounded-full w-full py-4 mt-5"
-          >
-            <View className=" flex-row items-center  justify-center">
-              <Image
-                resizeMode="contain"
-                className="w-5 h-5"
-                source={icons.google}
-              ></Image>
-              <Text className="text-lg font-rubik text-black-300 ml-2">
-                sign out
               </Text>
             </View>
           </TouchableOpacity>
