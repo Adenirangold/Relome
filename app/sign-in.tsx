@@ -22,7 +22,7 @@ const signIn = () => {
   const handleLogin = async () => {
     const result = await login();
     if (result) {
-      // refetch();
+      refetch();
       console.log("logged in");
     } else {
       Alert.alert("Error", "Failed To Login");
