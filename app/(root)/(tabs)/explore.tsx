@@ -69,7 +69,7 @@ export default function Explore() {
           <View className="px-5">
             <View className="flex flex-row items-center justify-between mt-5">
               <TouchableOpacity
-                onPress={() => router.back}
+                onPress={() => router.back()}
                 className="flex flex-row bg-primary-200 rounded-full size-11 items-center justify-center"
               >
                 <Image source={icons.backArrow} className="size-5"></Image>
@@ -78,7 +78,7 @@ export default function Explore() {
                 Search For Your Ideal Home
               </Text>
 
-              <Image source={icons.bell} className="w-6 h-6"></Image>
+              <Image source={icons.bell} className="w-6 h-6 "></Image>
             </View>
             <Search></Search>
             <View className="mt-5">
